@@ -1,0 +1,14 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ideaportal-service
+  namespace: ideaportal
+spec:
+  selector:
+    app: ideaportal
+  # type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 8051
+    targetPort: 8051

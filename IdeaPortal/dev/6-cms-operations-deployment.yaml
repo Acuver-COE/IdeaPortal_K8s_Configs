@@ -1,0 +1,194 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideaportal-deployment
+  namespace: ideaportal
+  labels:
+    app: ideaportal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ideaportal
+  template:
+    metadata:
+      labels:
+        app: ideaportal
+#    spec:
+#      volumes:
+#      - name: tobedeleted
+#        hostPath:
+#          path: /mnt/cms/s3data
+
+      containers:
+      - name: ideaportal-container
+        image: 332636102305.dkr.ecr.ap-south-1.amazonaws.com/idea-portal-build:latest
+        imagePullPolicy: Always
+        securityContext:
+          # privileged: true
+          allowPrivilegeEscalation: false
+          runAsUser: 0
+        volumeMounts:
+        - name: tobedeleted
+          mountPath: /var/s3fs:shared
+
+        ports:
+        - containerPort: 8051
+
+        env:
+
+        - name: SPRINGBOOTWEBFLUXJJWT_JJWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: SPRINGBOOTWEBFLUXJJWT_JJWT_SECRET
+
+        - name: SPRINGBOOTWEBFLUXJJWT_JJWT_EXPIRATION
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: SPRINGBOOTWEBFLUXJJWT_JJWT_EXPIRATION
+
+        - name: DB_URL
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: DB_URL
+
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: DB_USER
+
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: DB_PASS
+
+        - name: DB_BUCKET_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: DB_BUCKET_NAME
+
+        - name: SPRING_SENDGRID_APIKEY
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: SPRING_SENDGRID_APIKEY
+
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: AWS_ACCESS_KEY_ID
+
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ideaportal-secret
+              key: AWS_SECRET_ACCESS_KEY
+
+        - name: AWS_S3_BUCKET
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: AWS_S3_BUCKET
+
+        - name: AWS_S3_FILEPATH
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: AWS_S3_FILEPATH
+
+        - name: AWS_S3_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: AWS_S3_REGION
+
+        - name: EMAIL_FROM_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_USERNAME
+
+        - name: EMAIL_FROM_TEMPLATEIDW
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDW
+
+        - name: EMAIL_FROM_TEMPLATEIDF
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDF
+
+        - name: EMAIL_FROM_TEMPLATEIDA
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDA
+
+        - name: EMAIL_FROM_TEMPLATEIDPRODUCTREJORSEL
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDPRODUCTREJORSEL
+
+        - name: EMAIL_FROM_TEMPLATEIDIDEAREJORSEL
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDIDEAREJORSEL
+
+        - name: EMAIL_FROM_TEMPLATEIDNEWPRODUCTFORREVIEW
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDNEWPRODUCTFORREVIEW
+
+        - name: EMAIL_FROM_TEMPLATEIDNEWIDEAFORREVIEW
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDNEWIDEAFORREVIEW
+
+        - name: EMAIL_FROM_TEMPLATEIDUSERCREATIONBYADMIN
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDUSERCREATIONBYADMIN
+
+        - name: EMAIL_FROM_TEMPLATEIDSUBMITIDEATOIDEATOR
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDSUBMITIDEATOIDEATOR
+
+        - name: EMAIL_FROM_TEMPLATEIDSUBMITPRODUCTTOIDEATOR
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_TEMPLATEIDSUBMITPRODUCTTOIDEATOR
+
+        - name: EMAIL_FROM_URL
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_URL
+
+        - name: EMAIL_FROM_PATHURL
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: EMAIL_FROM_PATHURL
+
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: ideaportal-configmap
+              key: PORT
