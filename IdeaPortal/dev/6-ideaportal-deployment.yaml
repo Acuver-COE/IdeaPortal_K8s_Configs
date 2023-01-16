@@ -22,7 +22,7 @@ spec:
 
       containers:
       - name: ideaportal-container
-        image: 332636102305.dkr.ecr.ap-south-1.amazonaws.com/idea-portal-build:latest
+        image: 332636102305.dkr.ecr.ap-south-1.amazonaws.com/idea-portal-build:$TAGNAME
         imagePullPolicy: Always
         securityContext:
           # privileged: true
